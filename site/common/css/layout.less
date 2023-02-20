@@ -305,6 +305,11 @@ section {
 		>article {
 			>.contenu {
 				padding-top: 120px!important;
+				padding-bottom: 2vw;
+				justify-content: center;
+				>*:nth-child(n+2) {
+					margin-top: 2vw;
+				}
 				@media screen and (max-width: @strange-breakpoint) {
 					padding-top: unset;
 				}
