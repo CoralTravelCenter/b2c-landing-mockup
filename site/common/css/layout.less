@@ -7,6 +7,8 @@
 @mobile-breakpoint: 768px;
 @narrow-breakpoint: 576px;
 
+@max-content-width: 1370px;
+
 .reset() {
 	position: static;
 	left: auto;
@@ -148,26 +150,49 @@ body.underbrow {
 }
 
 .hero-visual(@desktop-visual-url: 'about:blank';
-			 @desktop-visual-height: auto;
-			 @mobile-visual-url: 'about:blank';
-			 @mobile-visual-height: auto) {
+			 @mobile-visual-url: 'about:blank') {
+
+	@di-width: image-width(replace(@desktop-visual-url, "^/", ""));
+	@di-height: image-height(replace(@desktop-visual-url, "^/", ""));
+	@d-ratio: (@di-width / @di-height);
+	@desktop-visual-height:  @di-height * (@hero-breakpoint / @di-width);
+
+	@mi-width: image-width(replace(@mobile-visual-url, "^/", ""));
+	@mi-height: image-height(replace(@mobile-visual-url, "^/", ""));
+	@m-ratio: (@mi-width / @mi-height);
+	@mobile-visual-height:  @mi-height * (@mobile-breakpoint / @mi-width);
+
+	@d-content-ratio: (@max-content-width/@desktop-visual-height);
+	@m-content-ratio: (@mobile-breakpoint/@mobile-visual-height);
+
 	background: url(@desktop-visual-url) center / cover no-repeat;
 	@media screen and (max-width: @mobile-breakpoint) {
 		background: url(@mobile-visual-url) center / cover no-repeat;
 	}
 	article {
-		.proportional(@wide-breakpoint/@desktop-visual-height);
+		.proportional(@max-content-width/@desktop-visual-height);
 		@media screen and (max-width: @mobile-breakpoint) {
 			.proportional(@mobile-breakpoint/@mobile-visual-height);
 		}
 	}
 	.vimeo-video-box {
-		.proportional(@hero-breakpoint/@desktop-visual-height);
+		.proportional(@d-ratio);
 		width: @hero-breakpoint;
 		position: absolute;
 		left: 50%;
 		top: 50%;
-		transform: translate(-50%,-50%);
+		transform: translate(-50%, -50%);
+		@media screen and (max-width: (@wide-breakpoint - 1px)) {
+			width: unit((1130px / @d-content-ratio) * @d-ratio, px);
+		}
+		@media screen and (max-width: (@mid-breakpoint - 1px)) {
+			width: unit((@d-ratio / @d-content-ratio) * 100, vw)
+		}
+		@media screen and (max-width: @mobile-breakpoint) {
+			.proportional(@m-ratio);
+			position: absolute;
+			width: 100vw;
+		}
 	}
 }
 
@@ -176,6 +201,7 @@ section {
 	&.hero {
 		position: relative;
 		width: 100vw;
+		max-width: @hero-breakpoint;
 		overflow: hidden;
 		> article {
 			//border: 1px solid #000;
@@ -246,6 +272,9 @@ section {
 		}
 	}
 	&.underbrow {
+		@media screen and (max-width: 1199px) {
+			margin-top: -2px;
+		}
 		>article {
 			>.contenu {
 				padding-top: 120px!important;
