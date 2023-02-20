@@ -196,6 +196,12 @@ body.underbrow {
 	}
 }
 
+body:not(.underbrow) {
+	section.hero:first-of-type {
+		margin-top: 2.5em;
+	}
+}
+
 section {
 	.bbox;
 	&.hero {
@@ -203,6 +209,7 @@ section {
 		width: 100vw;
 		max-width: @hero-breakpoint;
 		overflow: hidden;
+		color: @coral-common-black;
 		> article {
 			//border: 1px solid #000;
 			.silly-b2c-font-size;
@@ -275,6 +282,9 @@ section {
 		@media screen and (max-width: 1199px) {
 			margin-top: -2px;
 		}
+		@media screen and (max-width: @strange-breakpoint) {
+			margin-top: 0;
+		}
 		>article {
 			>.contenu {
 				padding-top: 120px!important;
@@ -290,7 +300,6 @@ section {
 				align-items: center;
 				padding-top: 2em;
 				padding-bottom: 2em;
-				color: @coral-common-black;
 				>h1, >.h1, >h2, >.h2, >h3, >.h3, >h4, >.h4, >h5, >.h5, >p {
 					text-align: center;
 					max-width: 75%;
