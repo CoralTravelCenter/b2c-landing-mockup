@@ -149,8 +149,26 @@ body.underbrow {
 	align-items: center;
 }
 
-.hero-visual(@desktop-visual-url: 'about:blank';
-			 @mobile-visual-url: 'about:blank') {
+.visual(@desktop-visual-url: ''; @mobile-visual-url: ''; @border-radius: 1em) {
+	@mobile-visual-url2: if((boolean(@mobile-visual-url = '')), @desktop-visual-url, @mobile-visual-url);
+	@di-width: image-width(replace(@desktop-visual-url, "^/", ""));
+	@di-height: image-height(replace(@desktop-visual-url, "^/", ""));
+	@d-ratio: (@di-width / @di-height);
+	@mi-width: image-width(replace(@mobile-visual-url2, "^/", ""));
+	@mi-height: image-height(replace(@mobile-visual-url2, "^/", ""));
+	@m-ratio: (@mi-width / @mi-height);
+
+
+	border-radius: @border-radius;
+	.proportional(@d-ratio);
+	background: url(@desktop-visual-url) center / cover no-repeat;
+	@media screen and (max-width: @mobile-breakpoint) {
+		.proportional(@m-ratio);
+		background: url(@mobile-visual-url2) center / cover no-repeat;
+	}
+}
+
+.hero-visual(@desktop-visual-url: 'about:blank'; @mobile-visual-url: 'about:blank') {
 
 	@di-width: image-width(replace(@desktop-visual-url, "^/", ""));
 	@di-height: image-height(replace(@desktop-visual-url, "^/", ""));
